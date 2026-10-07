@@ -1,0 +1,22 @@
+To: katikaratharva@gmail.com
+Subject: Approval needed: outpass for atharva - leaving Sat, 3 Oct, 2026, 4:44 pm
+
+Dear Asha,
+
+atharva has asked to leave Sai Residency PG for Home. Please approve or decline below.
+
+Student: atharva (Room 101)
+Going to: Home
+Reason: Going home
+Leaving: Sat, 3 Oct, 2026, 4:44 pm
+Expected back: Sat, 10 Oct, 2026, 10:10 pm
+Outpass no.: OP-20261003-002
+
+APPROVE: http://localhost:4001/outpass/respond?id=OP-20261003-002&t=O3-VVk7jifoAiGEhVoR6o7ZSJRKg-ftA&choice=approve
+DECLINE: http://localhost:4001/outpass/respond?id=OP-20261003-002&t=O3-VVk7jifoAiGEhVoR6o7ZSJRKg-ftA&choice=decline
+These buttons work until Tue, 6 Oct, 2026, 4:46 pm.
+
+If you were not expecting this, please contact the PG office straight away.
+
+Regards,
+Sai Residency PG

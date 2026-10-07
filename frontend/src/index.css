@@ -1,0 +1,52 @@
+@import '@fontsource-variable/inter';
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/500.css';
+@import '@fontsource/jetbrains-mono/600.css';
+@import 'material-symbols/outlined.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* The register lives on a wall-mounted tablet and a phone at the door.
+   Stopping the pull-to-refresh bounce keeps a mis-swipe from looking like
+   a crash to whoever is checking someone in. */
+html,
+body,
+#root {
+  min-height: 100%;
+  overscroll-behavior-y: none;
+}
+
+body {
+  background: #0f131c;
+  color: #dfe2ee;
+}
+
+/* Icons are text ligatures; keep them from being selected or wrapping. */
+.material-symbols-outlined {
+  user-select: none;
+  white-space: nowrap;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+.material-symbols-outlined.fill {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Cyan HUD corner brackets for the door camera. */
+.reticle::before,
+.reticle::after {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: #06b6d4;
+  border-style: solid;
+  pointer-events: none;
+}
+.reticle::before { top: 10px; left: 10px; border-width: 2px 0 0 2px; }
+.reticle::after { bottom: 10px; right: 10px; border-width: 0 2px 2px 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-ping, .animate-pulse, .animate-spin { animation: none !important; }
+}

@@ -217,6 +217,8 @@ Pick a student, confirm the parent's email, and press **Send request to parent**
 
 ![Outpass](docs/screenshots/outpass.png)
 
+The full flow, including the email the parent receives and the slip you print, is covered under [Outpasses](#-outpasses).
+
 ### Guest detail
 Exits in the last 7 days, average time away, last seen, and a full movement timeline with the camera and match score behind each entry.
 
@@ -290,6 +292,26 @@ Top bar → **Outpass** (or **Issue Outpass** on a guest's page): pick the stude
 
 > [!NOTE]
 > Each button opens a page with one confirm tap. That's deliberate: mail scanners open every link, so a link that decided on open would answer before the parent read anything.
+
+### 📨 What the parent sees
+
+The parent gets an email with the student, destination, reason, leaving time and pass number, plus one-tap **Approve** and **Decline** buttons. The email also states how long the buttons stay valid and gives the PG's contact number in case the parent wasn't expecting the request.
+
+<div align="center">
+
+![Parent approval email](docs/screenshots/parent-email.png)
+
+</div>
+
+### 🖨 The printed slip
+
+Once the parent has answered, **Print** produces a slip for the gate. It records the parent's decision and the time they gave it, and leaves signature lines for the warden and the student.
+
+<div align="center">
+
+![Printed outpass certificate](docs/screenshots/outpass-printed.png)
+
+</div>
 
 <details>
 <summary><b>Email setup</b></summary>
@@ -502,6 +524,9 @@ frontend/
                     UnknownFaces, OpenOverride (keeps /log working)
   src/components/   AppLayout, StatusBits, OverrideModal, OverrideContext
   src/api.js · time.js · App.jsx · index.css
+
+docs/screenshots/   README images (dashboard, door, add-guest, outpass,
+                    guest-detail, unknown, parent-email, outpass-printed)
 
 data/               guests · embeddings · logs · unknown  (.json, gitignored)
 setup.sh            first-run setup, safe to re-run

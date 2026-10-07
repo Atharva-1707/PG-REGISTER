@@ -1,11 +1,15 @@
 <div align="center">
 
-# 🚪 PG Register
+# 🚪 GateLog
 
 ### Walk through the door. The register updates itself.
 
 Face recognition replaces the paper sign-in book at a 20-guest PG.<br>
 Two cameras, one mini PC, zero photos stored.
+
+<br>
+
+![GateLog live dashboard](docs/screenshots/dashboard.png)
 
 <br>
 
@@ -20,7 +24,7 @@ Two cameras, one mini PC, zero photos stored.
 ![Python](https://img.shields.io/badge/Python-InsightFace-3776ab?logo=python&logoColor=white)
 ![ONNX](https://img.shields.io/badge/ONNX-Runtime-005ced?logo=onnx&logoColor=white)
 
-[Quick start](#-quick-start) · [Stages](#-bring-it-up-in-stages) · [Cameras](#-two-cameras) · [Outpasses](#-outpasses) · [API](#-api) · [Tuning](#-tuning) · [Consent](#-hardware-and-consent)
+[Quick start](#-quick-start) · [Stages](#-bring-it-up-in-stages) · [Cameras](#-two-cameras) · [Dashboard](#-the-dashboard) · [Outpasses](#-outpasses) · [API](#-api) · [Tuning](#-tuning) · [Consent](#-hardware-and-consent)
 
 </div>
 
@@ -187,21 +191,43 @@ python3 service.py --source in.mp4 --source2 out.mp4 --no-post --window
 
 ## 🖥 The dashboard
 
-<div align="center">
+Six tabs across the top: **Live Dashboard**, **At the Door**, **Guest List**, **Outpass**, **Add a Guest**, **Unknown Faces**. A green *Register online* dot, the clock, and **Manual Override** sit in the header on every page.
 
-| Register | At the Door | Add a guest |
-|:-:|:-:|:-:|
-| ![Register](docs/screenshots/register.png) | ![Door](docs/screenshots/door.png) | ![Add](docs/screenshots/add-guest.png) |
-| who's in, who's out | both cameras live | name, room, photos, consent |
+### Live Dashboard
+Who's in, who's out, and the entrance camera, all on one screen. Refreshes itself every 5 seconds.
 
-| Guest list | Unknown faces | Outpasses |
-|:-:|:-:|:-:|
-| ![Guests](docs/screenshots/guests.png) | ![Unknown](docs/screenshots/unknown.png) | ![Outpass](docs/screenshots/outpass.png) |
-| press and hold to multi-select | near-misses, shaded by threshold | parent approval status |
+![Live dashboard](docs/screenshots/dashboard.png)
 
-</div>
+Anyone not seen since the 4am rollover shows as **IN (assumed)**, because everyone is home at 4am. A real camera reading replaces that with a time and a match score.
 
-> Screenshots live in `docs/screenshots/`. Drop your own in with those names.
+### At the Door
+Both cameras side by side, each labelled with its current job (`marks IN` / `marks OUT`). **Swap cameras** and the live view switch are top right.
+
+![At the door](docs/screenshots/door.png)
+
+Here the view is switched off to spare the mini PC. The banner says it plainly: the cameras are still watching and the register is still filling in.
+
+### Add a Guest
+Name, room, optional phone, 3-8 photos and the consent tick. Enrolled guests are listed alongside.
+
+![Add a guest](docs/screenshots/add-guest.png)
+
+### Outpass
+Pick a student, confirm the parent's email, and press **Send request to parent**. Open passes show their status underneath.
+
+![Outpass](docs/screenshots/outpass.png)
+
+### Guest detail
+Exits in the last 7 days, average time away, last seen, and a full movement timeline with the camera and match score behind each entry.
+
+![Guest detail](docs/screenshots/guest-detail.png)
+
+The orange **REPEAT DIRECTION** tag marks a second "in" with no "out" between, a sign that a movement was probably missed.
+
+### Unknown Faces
+Faces the matcher saw but wouldn't name, with near-misses flagged against the threshold.
+
+![Unknown faces](docs/screenshots/unknown.png)
 
 Follows the **GateLog** design from the Stitch export: dark tonal surfaces, 🔵 cyan for telemetry, 🟢 emerald for *in*, 🟠 amber for *out*. The tokens in `frontend/tailwind.config.js` come straight from its `DESIGN.md`. Fonts and icons are served from npm, so it works on a PG network with no internet.
 
@@ -255,7 +281,7 @@ stateDiagram-v2
     Cancelled --> [*]
 ```
 
-Top bar → **Outpass** (or **Issue Outpass** on a guest's page): pick the student, confirm the parent's email, set reason and leaving time. The email shows the student, destination, reason, times and pass number.
+Top bar → **Outpass** (or **Issue Outpass** on a guest's page): pick the student, confirm the parent's email, set reason, destination and leaving time (expected return and a note are optional). The email shows the student, destination, reason, times and pass number.
 
 - One open pass per student
 - **Print** gives a slip for the gate. It says APPROVED, DECLINED or Awaiting, never more than the parent said
@@ -374,7 +400,7 @@ flowchart TD
     TOG --> R["4am rollover<br/>caps any drift to one day"]
 ```
 
-With one camera, the first plan toggled on every sighting. One missed recognition then inverted that guest's entries forever, silently. Tracking the face box fixes most of it, and the 4am reset (`DAY_RESET_HOUR`) bounds the rest. Set `APPROACH_MEANS=out` if your single camera watches people leaving.
+With one camera, the first plan toggled on every sighting. One missed recognition then inverted that guest's entries forever, silently. Tracking the face box fixes most of it, and the 4am reset (`DAY_RESET_HOUR`) bounds the rest. Set `APPROACH_MEANS=out` if your single camera watches people leaving. When the same direction repeats for a guest, the timeline tags it **REPEAT DIRECTION** so a missed movement is visible instead of silent.
 
 <details>
 <summary><b>Liveness: opt-in, and why it's off</b></summary>
